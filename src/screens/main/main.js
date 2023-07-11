@@ -40,7 +40,7 @@ const Main = () => {
                     :  
                     <div className=' flex  flex-col justify-center items-center w-full h-[500px] gap-4'>
                       <img src={logo} alt="logo" className=' h-[100px] w-[100px]' />
-                      <h1 className='text-lg font-semibold text-grayText w-[50%] '>Hey dear, I'm ITSY your culinary spider buddy! share your items, and I'll weave menys so snappy!</h1>
+                      <h1 className='text-lg font-semibold text-grayText w-[50%] '>Hey dear, I'm ITSY your culinary spider buddy! share your items, and I'll weave menus so snappy!</h1>
                     </div>
                    }
 
