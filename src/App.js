@@ -19,9 +19,9 @@ const  Main= lazy(() =>
 function App() {
   return (
     
-    <Router basename="/">
+    <Router basename="/ITSY">
       <Routes>
-          <Route path="/" element={<Navigate replace to="/main" />} />
+          <Route path="/ITSY" element={<Navigate replace to="/main" />} />
           <Route
           path="/main"
           element={
