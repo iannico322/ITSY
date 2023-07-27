@@ -1,7 +1,27 @@
 .App {
   text-align: center;
 }
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #04f500 #ffffff;
+  }
 
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #ffffff;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #04f500;
+    border-radius: 16px;
+    border: 3px solid #ffffff;
+  }
 .App-logo {
   height: 40vmin;
   pointer-events: none;
