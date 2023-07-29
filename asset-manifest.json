@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/ITSY/static/css/main.d5eb2864.css",
-    "main.js": "/ITSY/static/js/main.5b440a84.js",
+    "main.css": "/ITSY/static/css/main.b358f96e.css",
+    "main.js": "/ITSY/static/js/main.22ecabe0.js",
     "static/css/150.c6df3fa6.chunk.css": "/ITSY/static/css/150.c6df3fa6.chunk.css",
-    "static/js/150.923544a6.chunk.js": "/ITSY/static/js/150.923544a6.chunk.js",
+    "static/js/150.3008c0a8.chunk.js": "/ITSY/static/js/150.3008c0a8.chunk.js",
     "static/js/787.fdd4fe72.chunk.js": "/ITSY/static/js/787.fdd4fe72.chunk.js",
-    "static/js/679.1b0f7fbd.chunk.js": "/ITSY/static/js/679.1b0f7fbd.chunk.js",
+    "static/js/425.2d93dedd.chunk.js": "/ITSY/static/js/425.2d93dedd.chunk.js",
     "static/media/Itsy_logo.png": "/ITSY/static/media/Itsy_logo.8220b833ed3fe2f7837d.png",
     "static/media/Itsy_logo_w_text.png": "/ITSY/static/media/Itsy_logo_w_text.fc3c0eeb29d887bfe281.png",
     "static/media/logo.svg": "/ITSY/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/ITSY/index.html",
-    "main.d5eb2864.css.map": "/ITSY/static/css/main.d5eb2864.css.map",
-    "main.5b440a84.js.map": "/ITSY/static/js/main.5b440a84.js.map",
+    "main.b358f96e.css.map": "/ITSY/static/css/main.b358f96e.css.map",
+    "main.22ecabe0.js.map": "/ITSY/static/js/main.22ecabe0.js.map",
     "150.c6df3fa6.chunk.css.map": "/ITSY/static/css/150.c6df3fa6.chunk.css.map",
-    "150.923544a6.chunk.js.map": "/ITSY/static/js/150.923544a6.chunk.js.map",
+    "150.3008c0a8.chunk.js.map": "/ITSY/static/js/150.3008c0a8.chunk.js.map",
     "787.fdd4fe72.chunk.js.map": "/ITSY/static/js/787.fdd4fe72.chunk.js.map",
-    "679.1b0f7fbd.chunk.js.map": "/ITSY/static/js/679.1b0f7fbd.chunk.js.map"
+    "425.2d93dedd.chunk.js.map": "/ITSY/static/js/425.2d93dedd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d5eb2864.css",
-    "static/js/main.5b440a84.js"
+    "static/css/main.b358f96e.css",
+    "static/js/main.22ecabe0.js"
   ]
 }
