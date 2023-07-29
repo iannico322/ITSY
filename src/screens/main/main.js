@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Logo from './../../images/Itsy_logo_w_text.png'
 import logo from './../../images/Itsy_logo.png'
 import InputText from '../../components/inputs/input'
@@ -12,7 +12,11 @@ import Checkbox from '@mui/material/Checkbox';
 
 const Main = () => {
   // [1,2,3,3,2,2,3,2] put in the usestate
-  const [chats,setChats] = useState()
+  // const [chats,setChats] = useState([{"name":"asds"}])
+
+  const [data, setData] = useState({
+    items: []
+  });
 
 
 
@@ -58,6 +62,28 @@ const Main = () => {
     }
   };
 
+  const uploadImage=(e)=> {
+    setData({
+      ...data,
+      items: [...data.items, { from: "user",image:URL.createObjectURL(e.target.files[0])}],
+    });
+    console.log(data.items)
+  }
+
+  const addItems=(e)=> {
+    setData({
+      ...data,
+      items: [...data.items, { from: "user",product:"banana"}],
+    });
+    console.log(data.items)
+  }
+ 
+ 
+
+
+
+
+  
 
   return (
     <div className='relative flex flex-col w-screen h-screen overflow-hidden bg-gray'>
@@ -79,22 +105,44 @@ const Main = () => {
 
               <div className='flex flex-col  w-[90%] h-full gap-3 overflow-hidden   '>
                 <div id='page1' className="relative flex flex-col justify-start w-full min-h-full p-5 translate-y-0 bg-white rounded-lg opacity-100 smooth" >
-                  
+               
                   <div className=' absolute h-[82%] w-full '>
-                  <button className=' animate__animated animate__fadeIn absolute bottom-0 z-10 flex items-center justify-center gap-2 cursor-pointer right-0 m-20  border-opacity-30 hover:bg-opacity-70 active:bg-gray  w-[120px] h-[40px] pr-2 rounded-lg text-white bg-green '> <span class="material-symbols-outlined">
+                  <label htmlFor="file-upload" className="animate__animated animate__fadeIn absolute bottom-0 z-10 flex items-center justify-center gap-2 cursor-pointer right-0 m-20  border-opacity-30 hover:bg-opacity-70 active:bg-gray  w-[120px] h-[40px] pr-2 rounded-lg text-white bg-green ">
+                  <span class="material-symbols-outlined">
                     upload
-                  </span> Upload</button>
+                  </span> Upload
+                </label>
+                <input id="file-upload" type="file" className='hidden ' onChange={uploadImage} />
+                
 
                   </div>
                   <div className=' relative h-[95%]  border-[1px] border-green rounded-md w-full overflow-y-scroll'>
                   
                  
-                    <div className='absolute z-0 flex flex-col w-full min-h-full overflow-hidden '>
+                    <div className='absolute z-0 flex flex-col w-full min-h-full py-10 overflow-hidden '>
 
                    {
-                    chats?
-                    chats.map(e=>(
-                      <div className=' w-[100%] h-[150px] border-b-green bg-white flex items-center justify-center'>{e}</div>
+
+                    // if items is not empty it use the chat else default greetings
+                    data.items != 0?
+                    data.items.map((e,id)=>(
+
+                      e.from == "user"?
+                      <div className=' w-[100%] min-h-[150px]  bg-white flex items-center justify-end border-b-[1px] border-[#00000010]'>{id}
+                      {
+                        e.image? <img className='w-56 h-52' src={e.image}/>:""
+                      }
+
+                      {
+                        e.product? <p>{e.product}</p>:""
+                      }
+                      </div>
+
+                      : <div className=' w-[100%] min-h-[150px] border-b-green bg-white flex items-center justify-center'>{id}
+                      {
+                        e.image? <img className='w-56 h-52' src={e.image}/>:""
+                      }
+                      </div>
                     ))
                     
                     :  
@@ -120,7 +168,7 @@ const Main = () => {
                       <InputText
                         label="Quantity/Weight"
                       />
-                      <button className=' w-[300px] min-w-[80px] h-[40px] rounded-lg text-white bg-green'>Add item</button>
+                      <button onClick={addItems} className=' w-[300px] min-w-[80px] h-[40px] rounded-lg text-white bg-green'>Add item</button>
 
                       </div>
 
