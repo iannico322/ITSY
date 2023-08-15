@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Logo from './../../images/Itsy_logo_w_text.png'
 import logo from './../../images/Itsy_logo.png'
 import InputText from '../../components/inputs/input'
-import recipes from './sampleData'
 import './smooth.css'
 import RecipeScreen from '../recipe/recipeScreen'
+import OPEN_AI_KEY from '../recipe/key'
 
 
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -13,13 +13,36 @@ import Checkbox from '@mui/material/Checkbox';
 const Main = () => {
   // [1,2,3,3,2,2,3,2] put in the usestate
   // const [chats,setChats] = useState([{"name":"asds"}])
-  
+  const [recipes,setRecipes]= useState([])
+
+ 
 
   const [items,setItem] = useState({name:"",qk:""})
   const [product,setproducts]= useState([])
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [SelectedPref,setSelectedPref]= useState([])
 
+  const bodyPrompt = `Generate at least 2 dishes in JSON format based on the following products, preferences, and language:
+
+  Products: ${product}
+  Preferences: ${SelectedPref}
+  Language: [english]
+  
+  Output:
+  [
+      {
+          "name": "dish name",
+          "ingredients": ["ingredient1", "ingredient2", ...],
+          "cooking_steps": ["1. step1", "2. step2", ...]
+      },
+      ...
+  ]
+  make your response strickly inline with the output format, which is JSON, do not talk anything else please, and do restrict from adding additional product that is not included in products list. make your cooking steps detailed as much as posible. again make sure your reponse is accurately on the expected output format.`
+
+
+
+  //scroll down automatically when child is added to the chat container
   useEffect(()=>{
 
     const element = document.querySelector('#bottom-scroll')
@@ -66,7 +89,7 @@ const Main = () => {
   })
 
 
-  const [SelectedPref,setSelectedPref]= useState([])
+ 
   const handleCheck = (event, item) => {
     if (event.target.checked) {
       setSelectedPref([...SelectedPref, item]);
@@ -75,40 +98,26 @@ const Main = () => {
     }
   };
 
-  const uploadImage=(e)=> {
+  const uploadImage= async (e)=> {
 
-    const newMessage = {
-      message:" Scan this item ",
+    setMessages([...messages, {
+      message:" ITSY please do scan this image for me ",
       direction: 'outgoing',
       from: "user",
       image:URL.createObjectURL(e.target.files[0])
-    };
-   
-
-    setMessages([...messages, newMessage]);
-    console.log(messages.items)
+    },{
+      message: "My little spider legs are already scurrying to scan the image with my advanced image recognition algorithms. I’ll whip up some detailed information for you in no time!🍴",
+      direction: 'outgoing',
+      from: "ChatGPT"
+    }]);
+    
   }
 
-  // const addItems=(e)=> {
-  //   setMessages({
-  //     ...messages,
-  //     items:[...messages.items,{
-  //       from:"user",
-  //       product:[...messages.items[0].product,`${items.qk} ${items.name}, `]
-  //     }]
-  //   });
-
-
-  //   setItem({name:"",qk:""})
-  //   console.log(messages.items[0])
-  // }
 
   function addItems() {
 
-   
-    
-    console.table(product)
-    setproducts([...product,`, ${items.qk} ${items.name}`])
+    if (items.name !="") {
+      setproducts([...product,`${items.qk} ${items.name}`])
     
     const newMessage = {
       product: product.length ==0? `${items.qk} ${items.name}`:`${[...product,` ${items.qk} ${items.name}`]} ` ,
@@ -119,29 +128,25 @@ const Main = () => {
 
     setMessages([...messages, newMessage]);
 
-  
+
     console.table(messages)
+    setItem({name:"",qk:""})
+    }
 
-   
-    
-
-    // setproducts([...product,` you have banana `])
-    // setMessages({
-    //   ...messages,
-    //   items: [...messages.items, { from: "user",product:`${items.qk} ${items.name}, `}],
-    // });
+  }
 
 
+  const systemMessage = { 
+    "role": "system", "content": "Explain things like you're talking to a professional chief with 2 years of experience."
+  }
 
-    // setMessages((prevData) => {
-    //   const newItems = [...messages.items];
-    //   newItems[0] = {
-    //     ...newItems[0],
-    //     from:"user",
-    //     product: [...newItems[0].product, `${items.qk} ${items.name}, `],
-    //   };
-    //   return { ...prevData, items: newItems };
-    // });
+  const apiMessages =  { role: "assistant", content: bodyPrompt}
+  const apiRequestBody = {
+    "model": "gpt-3.5-turbo",
+    "messages": [
+      systemMessage,  // The system message DEFINES the logic of our chatGPT
+      apiMessages // The messages from our chat with ChatGPT
+    ]
   }
   
  
@@ -196,14 +201,18 @@ const Main = () => {
                       messages.map((e, id) =>
                       
                         e.from == "user" ? (
-                          <div className=" w-[100%] min-h-[15px]  bg-white flex items-center justify-end  py-3">
+                          <div className=" animate__animated animate__fadeInUp w-[100%] min-h-[15px]  bg-white flex items-center justify-end  py-3 ">
                             
                             <div className='px-5 py-2 min-w-[10px] max-w-[60%] text-base text-white rounded-lg shadow-md bg-green'>
                             {e.image ? (
+                              <>
+                              <p className='pt-1 pb-4 '>{e.message}</p>
                               <img
-                                className="object-contain rounded-sm min-w-56 min-h-52 max-h-56"
+                                className="object-contain rounded-lg min-w-56 min-h-52 max-h-56"
                                 src={e.image}
                               />
+                              </>
+                              
                             ) : (
                               ""
                             )}
@@ -218,8 +227,8 @@ const Main = () => {
                             </div>
                           </div>
                         ) : (
-                          <div className=" w-[100%] min-h-[150px] border-b-green bg-white flex items-center justify-start ">
-                            <div className='px-2 max-w-[60%] py-3 pr-8 ml-3 rounded-lg shadow-sm bg-[#f1f1f19f] border-[1px] border-black border-opacity-10'>
+                          <div className=" animate__animated animate__fadeInUp w-[100%] min-h-[150px] border-b-green bg-white flex items-center justify-start ">
+                            <div className={isTyping?'px-2 max-w-[60%] py-3 pr-8 ml-3 rounded-lg shadow-sm bg-[#f1f1f19f] border-[1px] border-black border-opacity-10 animate-float':'px-2 max-w-[60%] py-3 pr-8 ml-3 rounded-lg shadow-sm bg-[#f1f1f19f] border-[1px] border-black border-opacity-10 '}>
 
                             <div className='flex gap-2 '>
                               <img
@@ -354,18 +363,55 @@ const Main = () => {
               </div>
 
               <button
-                onClick={() => {
+                onClick={ async() => {
 
-                  setMessages([...messages, {
-                    message: "Hey dear, is that everything? click the generate now!",
-                    direction: 'outgoing',
-                    from: "ChatGPT"
-                  }]);
-                  setGenerate(true);
+
+                  if (product.length !=0) {
+                    setIsTyping(true);
+                  setMessages([
+                    ...messages,
+                    {
+                      message:
+                        "Scampering off to search for the yummiest dishes! Hang tight, my little culinary spider legs are working as fast as they can! 🍴✨",
+                      from: "ChatGPT",
+                    },
+                  ]);
+
+                  await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${OPEN_AI_KEY}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(apiRequestBody),
+                  })
+                    .then((data) => {
+                      return data.json();
+                    })
+                    .then((data) => {
+                      setGenerate(true);
+                      setIsTyping(false);
+                      setRecipes(JSON.parse(data.choices[0].message.content));
+                      setMessages([
+                        ...messages,
+                        {
+                          message: `Here are the scrumptious dishes my little culinary spider legs have whipped up for you! Just give the ‘View’ button a little tap to see the full picture of your dish `,
+                          from: "ChatGPT",
+                        },
+                      ]);
+
+                      console.log(JSON.parse(data.choices[0].message.content));
+                    });
+                    
+                  }
+
+              
+                 
                 }}
-                className="animate__animated animate__backInUp  relative w-full h-[50px] mt-1 rounded-lg self-end bottom-0 text-white font-semibold text-lg hover:bg-opacity-70 active:bg-gray bg-green"
+                className={isTyping?"   relative w-full h-[50px] mt-1 rounded-lg self-end bottom-0 text-green border-2 border-green border-opacity-25 font-semibold text-lg hover:bg-opacity-70 active:bg-gray bg-white pointer-events-none cursor-not-allowed ":"animate__animated animate__backInUp  relative w-full h-[50px] mt-1 rounded-lg self-end bottom-0 text-white font-semibold text-lg hover:bg-opacity-70 active:bg-gray bg-green "}
               >
-                Generate recipe
+                {isTyping? 
+                "Generating delicious recipe for you! Hang tight..." :"Generate Recipe"}
               </button>
             </div>
 
@@ -394,7 +440,9 @@ const Main = () => {
             {/* Generating recipes when generate recipe button is clicked */}
             {generate ? (
               <div className="flex flex-col items-center rounded-lg border-[1px] border-[#1EDF38] w-[88%] h-[100%] p-5 pl-10 mb-5 gap-7 ">
-                {recipes.map((item, index) => (
+                {
+                recipes?
+                recipes.map((item, index) => (
                   <div className=" flex flex-row w-[100%] justify-between items-center hover:cursor-pointer animate__animated animate__fadeIn">
                     <p className=" text-[#666C67] font-bold text-xl text-left">
                       {" "}
@@ -410,7 +458,9 @@ const Main = () => {
                       View
                     </button>
                   </div>
-                ))}
+                )):""
+              
+              }
               </div>
             ) : (
               <div className="flex flex-col items-center rounded-lg border-[1px] border-[#1EDF38] w-[88%] h-full p-5 mb-5">

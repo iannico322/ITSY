@@ -46,9 +46,10 @@ const RecipeScreen = (props) => {
               <p className="text-base font-bold ">Ingredients:</p>
               <ul className=" pl-[70px] font-semibold text-start " >
               {
+                props.selectedMenu.ingredients?
                     props.selectedMenu.ingredients.map((e,id)=>(
                         <li>📙 {e}</li>
-                    ))
+                    )):""
                 }
                 
               </ul>
@@ -58,10 +59,10 @@ const RecipeScreen = (props) => {
             <div className=" flex flex-col items-start w-full min-h-[20px] pl-[82px] pt-10 gap-3">
               <p className="text-base font-bold ">Cooking Steps:</p>
               <ul className=" pl-[70px]  text-start font-normal " >
-                {
-                    props.selectedMenu.steps.map((e,id)=>(
-                        <li>{id+1}. {e}</li>
-                    ))
+                {props.selectedMenu.cooking_steps?
+                    props.selectedMenu.cooking_steps.map((e,id)=>(
+                        <li>{e}</li>
+                    )):""
                 }
                 
               </ul>

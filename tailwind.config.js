@@ -41,8 +41,8 @@ module.exports = {
           '0%': { transform: 'translateY(0px) rotate(0deg)' },
           '50%': {
             
-            filter:"drop-shadow(0 1.2rem .8rem #d1d1d1)",
-            transform: 'translateY(40px) rotate(2deg)',   },
+           opacity:"50%",
+            transform: 'translateY(4px) rotate(0deg)',   },
           '100%': {transform: 'translateY(0px) rotate(0deg)' },
         },
         floatHouse: {
@@ -96,7 +96,7 @@ module.exports = {
       },
       animation: {
         arrow: 'arrowFloat 2s ease-in-out infinite',
-        float: 'float 7s ease-in-out infinite',
+        float: 'float 2s ease-in-out infinite',
         floatHouse: 'floatHouse 3s ease-in-out infinite',
         floatCloud: 'floatCloud 20s ease-in-out infinite',
         floatSun: 'floatSun 30s ease-in-out infinite',
