@@ -4,7 +4,7 @@ import logo from './../../images/Itsy_logo.png'
 import InputText from '../../components/inputs/input'
 import './smooth.css'
 import RecipeScreen from '../recipe/recipeScreen'
-import OPEN_AI_KEY from '../recipe/key'
+
 
 
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -380,7 +380,7 @@ const Main = () => {
                   await fetch("https://api.openai.com/v1/chat/completions", {
                     method: "POST",
                     headers: {
-                      Authorization: `Bearer ${OPEN_AI_KEY}`,
+                      Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`,
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify(apiRequestBody),
